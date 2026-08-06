@@ -7,8 +7,10 @@
     <title>SimplePDF - PDF to JPG Converter</title>
 
     <meta name="description" content="Convert PDF to JPG online for free. Fast, secure and browser based.">
+    <meta name="keywords" content="PDF to JPG, Convert PDF, SimplePDF">
+    <meta name="author" content="rzzku">
 
-    <!-- Noto Sans -->
+    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -16,14 +18,11 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
+    <!-- JSZip -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-    </script>
 
 </head>
 
@@ -31,13 +30,20 @@
 
 <header>
 
+    <button id="themeToggle" class="theme-toggle">
+
+        🌙
+
+    </button>
+
     <div class="container">
 
         <h1>SimplePDF</h1>
 
-        <p>
-            Convert PDF to JPG instantly,
-            free and secure.
+        <p class="tagline">
+
+            Fast • Secure • Browser Based
+
         </p>
 
     </div>
@@ -46,19 +52,29 @@
 
 <main class="container">
 
+    <!-- Upload -->
+
     <section class="upload-card">
 
         <div id="dropArea" class="drop-area">
 
             <div class="upload-icon">
+
                 📄
+
             </div>
 
             <h2>
+
                 Drop your PDF here
+
             </h2>
 
-            <p>or</p>
+            <p>
+
+                or
+
+            </p>
 
             <label
                 class="btn"
@@ -84,6 +100,8 @@
 
     </section>
 
+    <!-- Loading -->
+
     <section
         id="loadingSection"
         class="loading hidden">
@@ -92,11 +110,13 @@
 
         <h3 id="progressText">
 
-            Converting PDF...
+            Preparing...
 
         </h3>
 
     </section>
+
+    <!-- Preview -->
 
     <section
         id="previewSection"
@@ -106,11 +126,13 @@
 
             <div>
 
-                <h2>Preview</h2>
+                <h2>
 
-                <small id="totalPages">
+                    Preview
 
-                </small>
+                </h2>
+
+                <small id="totalPages"></small>
 
             </div>
 
@@ -136,17 +158,27 @@
 
 <footer>
 
-    <p>
+    <div class="footer-wrapper">
 
-        © 2026 SimplePDF
+        <p>
 
-        • Fast
+            © 2026 SimplePDF
 
-        • Secure
+        </p>
 
-        • by rzzku
+        <span>
 
-    </p>
+            Fast • Secure • Browser Based
+
+        </span>
+
+        <small>
+
+            by rzzku
+
+        </small>
+
+    </div>
 
 </footer>
 
