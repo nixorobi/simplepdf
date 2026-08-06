@@ -1,185 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SimplePDF - PDF to JPG</title>
 
-    <title>SimplePDF - PDF to JPG Converter</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <meta name="description" content="Convert PDF to JPG online for free. Fast, secure and browser based.">
-    <meta name="keywords" content="PDF to JPG, Convert PDF, SimplePDF">
-    <meta name="author" content="rzzku">
-
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css">
-
-    <!-- PDF.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-    <!-- JSZip -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 
 <body>
 
 <header>
+<button id="themeToggle" class="theme-toggle">🌙</button>
 
-    <button id="themeToggle" class="theme-toggle">
-
-        🌙
-
-    </button>
-
-    <div class="container">
-
-        <h1>SimplePDF</h1>
-
-        <p class="tagline">
-
-            Fast • Secure • Browser Based
-
-        </p>
-
-    </div>
-
+<div class="container">
+<h1>SimplePDF</h1>
+<p>Fast • Secure • Browser Based</p>
+</div>
 </header>
 
 <main class="container">
 
-    <!-- Upload -->
+<section class="upload-card">
+<div id="dropArea" class="drop-area">
+<div class="upload-icon">📄</div>
 
-    <section class="upload-card">
+<h2>Drop your PDF here</h2>
 
-        <div id="dropArea" class="drop-area">
+<p>or</p>
 
-            <div class="upload-icon">
+<label class="btn" for="pdfFile">Choose PDF</label>
 
-                📄
+<input id="pdfFile" type="file" accept="application/pdf" hidden>
 
-            </div>
+<small>Maximum file size depends on your browser.</small>
+</div>
+</section>
 
-            <h2>
+<section id="loadingSection" class="loading hidden">
+<div class="spinner"></div>
+<h3 id="progressText">Preparing...</h3>
+</section>
 
-                Drop your PDF here
+<section id="previewSection" class="hidden">
 
-            </h2>
+<div class="preview-header">
 
-            <p>
+<div>
+<h2>Preview</h2>
+<small id="totalPages"></small>
+</div>
 
-                or
+<button id="downloadAll" class="btn secondary">
+Download All JPG
+</button>
 
-            </p>
+</div>
 
-            <label
-                class="btn"
-                for="pdfFile">
+<div id="previewGrid" class="preview-grid"></div>
 
-                Choose PDF
-
-            </label>
-
-            <input
-                id="pdfFile"
-                type="file"
-                accept="application/pdf"
-                hidden>
-
-            <small>
-
-                Maximum file size depends on your browser.
-
-            </small>
-
-        </div>
-
-    </section>
-
-    <!-- Loading -->
-
-    <section
-        id="loadingSection"
-        class="loading hidden">
-
-        <div class="spinner"></div>
-
-        <h3 id="progressText">
-
-            Preparing...
-
-        </h3>
-
-    </section>
-
-    <!-- Preview -->
-
-    <section
-        id="previewSection"
-        class="hidden">
-
-        <div class="preview-header">
-
-            <div>
-
-                <h2>
-
-                    Preview
-
-                </h2>
-
-                <small id="totalPages"></small>
-
-            </div>
-
-            <button
-                id="downloadAll"
-                class="btn secondary">
-
-                Download All JPG
-
-            </button>
-
-        </div>
-
-        <div
-            id="previewGrid"
-            class="preview-grid">
-
-        </div>
-
-    </section>
+</section>
 
 </main>
 
 <footer>
-
-    <div class="footer-wrapper">
-
-        <p>
-
-            © 2026 SimplePDF
-
-        </p>
-
-        <span>
-
-            Fast • Secure • Browser Based
-
-        </span>
-
-        <small>
-
-            by rzzku
-
-        </small>
-
-    </div>
-
+<p>© 2026 SimplePDF</p>
+<small>Fast • Secure • Browser Based</small>
 </footer>
 
 <script src="script.js"></script>
