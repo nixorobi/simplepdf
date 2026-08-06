@@ -65,122 +65,243 @@ async function convertPDF(file){
 
         const page = await pdf.getPage(i);
 
-        const viewport =
-        page.getViewport({scale:2});
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-        const canvas =
-        document.createElement("canvas");
+const fileInput = document.getElementById("pdfFile");
+const dropArea = document.getElementById("dropArea");
+const loading = document.getElementById("loadingSection");
+const previewSection = document.getElementById("previewSection");
+const previewGrid = document.getElementById("previewGrid");
 
-        const ctx =
-        canvas.getContext("2d");
+const progressText = document.getElementById("progressText");
+const totalPagesText = document.getElementById("totalPages");
+const downloadAllBtn = document.getElementById("downloadAll");
+const themeToggle = document.getElementById("themeToggle");
 
-        canvas.width=viewport.width;
-        canvas.height=viewport.height;
+let jpgFiles = [];
 
-        await page.render({
-            canvasContext:ctx,
-            viewport
-        }).promise;
+/* ===================== THEME ===================== */
 
-        const image =
-        canvas.toDataURL("image/jpeg",1);
+themeToggle.addEventListener("click", () => {
 
-        jpgFiles.push({
-            name:`page-${i}.jpg`,
-            data:image
-        });
+    document.body.classList.toggle("dark");
 
-        createCard(image,i);
+    themeToggle.textContent =
+        document.body.classList.contains("dark")
+            ? "☀️"
+            : "🌙";
+
+});
+
+/* ===================== FILE INPUT ===================== */
+
+fileInput.addEventListener("change", e => {
+
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+        alert("Please select a PDF file.");
+        return;
+    }
+
+    convertPDF(file);
+
+});
+
+/* ===================== DRAG & DROP ===================== */
+
+dropArea.addEventListener("dragover", e => {
+
+    e.preventDefault();
+
+    dropArea.classList.add("dragover");
+
+});
+
+dropArea.addEventListener("dragleave", () => {
+
+    dropArea.classList.remove("dragover");
+
+});
+
+dropArea.addEventListener("drop", e => {
+
+    e.preventDefault();
+
+    dropArea.classList.remove("dragover");
+
+    const file = e.dataTransfer.files[0];
+
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+
+        alert("Please select a PDF file.");
+        return;
 
     }
 
-    progressText.textContent="Completed.";
+    convertPDF(file);
 
-    loading.classList.add("hidden");
+});
 
-    previewSection.classList.remove("hidden");
+/* ===================== CONVERT PDF ===================== */
+
+async function convertPDF(file) {
+
+    try {
+
+        jpgFiles = [];
+
+        previewGrid.innerHTML = "";
+
+        loading.classList.remove("hidden");
+
+        previewSection.classList.add("hidden");
+
+        progressText.textContent = "Preparing...";
+
+        const pdf = await pdfjsLib.getDocument({
+            data: await file.arrayBuffer()
+        }).promise;
+
+        totalPagesText.textContent = `${pdf.numPages} Pages`;
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+
+            progressText.textContent =
+                `Converting page ${i} of ${pdf.numPages}...`;
+
+            const page = await pdf.getPage(i);
+
+            const viewport = page.getViewport({
+                scale: 2
+            });
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            await page.render({
+                canvasContext: ctx,
+                viewport
+            }).promise;
+
+            const image = canvas.toDataURL("image/jpeg", 1);
+
+            jpgFiles.push({
+                name: `page-${i}.jpg`,
+                data: image
+            });
+
+            createCard(image, i);
+
+        }
+
+        progressText.textContent = "Completed.";
+
+        loading.classList.add("hidden");
+
+        previewSection.classList.remove("hidden");
+
+        fileInput.value = "";
+
+    } catch (err) {
+
+        console.error(err);
+
+        loading.classList.add("hidden");
+
+        alert("Failed to convert PDF.");
+
+    }
 
 }
 
-function createCard(image,page){
+/* ===================== CREATE PREVIEW ===================== */
 
-    const card=document.createElement("div");
+function createCard(image, page) {
 
-    card.className="preview-card";
+    const card = document.createElement("div");
 
-    card.innerHTML=`
+    card.className = "preview-card";
 
-        <img src="${image}">
-
+    card.innerHTML = `
+        <img src="${image}" alt="Page ${page}">
         <div class="preview-info">
-
             <h3>Page ${page}</h3>
-
-            <button class="btn">
-
-                Download JPG
-
-            </button>
-
+            <button class="btn">Download JPG</button>
         </div>
-
     `;
 
-    card.querySelector("button").onclick=()=>{
+    card.querySelector("button").addEventListener("click", () => {
 
-        const a=document.createElement("a");
+        const a = document.createElement("a");
 
-        a.href=image;
+        a.href = image;
+        a.download = `page-${page}.jpg`;
 
-        a.download=`page-${page}.jpg`;
+        document.body.appendChild(a);
 
         a.click();
 
-    };
+        a.remove();
+
+    });
 
     previewGrid.appendChild(card);
 
 }
 
-downloadAllBtn.onclick = async ()=>{
+/* ===================== DOWNLOAD ALL ===================== */
 
-    if(jpgFiles.length===0){
+downloadAllBtn.addEventListener("click", async () => {
+
+    if (jpgFiles.length === 0) {
+
         alert("No JPG available.");
+
         return;
+
     }
 
     const zip = new JSZip();
 
-    jpgFiles.forEach(file=>{
-
-        const base64 =
-        file.data.split(",")[1];
+    jpgFiles.forEach(file => {
 
         zip.file(
             file.name,
-            base64,
-            {base64:true}
+            file.data.split(",")[1],
+            {
+                base64: true
+            }
         );
 
     });
 
-    const content =
-    await zip.generateAsync({
-        type:"blob"
+    const content = await zip.generateAsync({
+        type: "blob"
     });
 
-    const url =
-    URL.createObjectURL(content);
+    const url = URL.createObjectURL(content);
 
-    const a =
-    document.createElement("a");
+    const a = document.createElement("a");
 
-    a.href=url;
+    a.href = url;
 
-    a.download="SimplePDF-JPG.zip";
+    a.download = "SimplePDF-JPG.zip";
+
+    document.body.appendChild(a);
 
     a.click();
 
+    a.remove();
+
     URL.revokeObjectURL(url);
 
-};
+});
