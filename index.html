@@ -3,53 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Convert PDF to JPG online for free. Fast, secure, and works directly in your browser.">
-    <meta name="keywords" content="PDF to JPG, Convert PDF, SimplePDF">
-    <meta name="author" content="SimplePDF">
+
     <title>SimplePDF - PDF to JPG Converter</title>
+
+    <meta name="description" content="Convert PDF to JPG online for free. Fast, secure and browser based.">
+
+    <!-- Noto Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    </script>
+
 </head>
+
 <body>
 
 <header>
+
     <div class="container">
+
         <h1>SimplePDF</h1>
-        <p>Convert PDF to JPG instantly, free and secure.</p>
+
+        <p>
+            Convert PDF to JPG instantly,
+            free and secure.
+        </p>
+
     </div>
+
 </header>
 
 <main class="container">
+
     <section class="upload-card">
+
         <div id="dropArea" class="drop-area">
-            <div class="upload-icon">📄</div>
-            <h2>Drop your PDF here</h2>
+
+            <div class="upload-icon">
+                📄
+            </div>
+
+            <h2>
+                Drop your PDF here
+            </h2>
+
             <p>or</p>
-            <label for="pdfFile" class="btn">Choose PDF</label>
-            <input type="file" id="pdfFile" accept="application/pdf" hidden>
-            <small>Maximum file size depends on your browser.</small>
+
+            <label
+                class="btn"
+                for="pdfFile">
+
+                Choose PDF
+
+            </label>
+
+            <input
+                id="pdfFile"
+                type="file"
+                accept="application/pdf"
+                hidden>
+
+            <small>
+
+                Maximum file size depends on your browser.
+
+            </small>
+
         </div>
+
     </section>
 
-    <section id="loadingSection" class="loading hidden">
+    <section
+        id="loadingSection"
+        class="loading hidden">
+
         <div class="spinner"></div>
-        <p>Converting PDF...</p>
+
+        <h3 id="progressText">
+
+            Converting PDF...
+
+        </h3>
+
     </section>
 
-    <section id="previewSection" class="hidden">
+    <section
+        id="previewSection"
+        class="hidden">
+
         <div class="preview-header">
-            <h2>Preview</h2>
-            <button id="downloadAll" class="btn secondary">Download All JPG</button>
+
+            <div>
+
+                <h2>Preview</h2>
+
+                <small id="totalPages">
+
+                </small>
+
+            </div>
+
+            <button
+                id="downloadAll"
+                class="btn secondary">
+
+                Download All JPG
+
+            </button>
+
         </div>
-        <div id="previewGrid" class="preview-grid"></div>
+
+        <div
+            id="previewGrid"
+            class="preview-grid">
+
+        </div>
+
     </section>
+
 </main>
 
 <footer>
-    <p>© 2026 SimplePDF • Fast • Secure • Browser Based</p>
+
+    <p>
+
+        © 2026 SimplePDF
+
+        • Fast
+
+        • Secure
+
+        • Browser Based
+
+    </p>
+
 </footer>
 
 <script src="script.js"></script>
+
 </body>
 </html>
